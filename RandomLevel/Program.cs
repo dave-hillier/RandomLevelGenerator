@@ -232,6 +232,7 @@ namespace RandomLevel
 			}
 			return true;
 		}
+
 		static IEnumerable<Tuple<int, int>> GridCoordinates()
 		{
 			for (var i = 0; i < size; ++i) {
