@@ -108,8 +108,6 @@ namespace RandomLevel
 
         private static void PlaceRooms()
         {
-            // TODO: Place a capture point
-
             var roomCenter = new List<GridNode>();
 
             var captureRoom = PlaceRoom(Size, Size/2);

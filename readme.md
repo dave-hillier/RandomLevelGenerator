@@ -1,5 +1,6 @@
 Generates maps that look like this:
 
+```
 XXXXXXXXXXXXXXXXXXXXXXXXXX
 X   XXXX     XX    XXXXXXX
 X R XXXX     XX C  XXXXXXX
@@ -26,3 +27,4 @@ X                        X
 XXXXXXX  C XX     XXXX B X
 XXXXXXX    XX     XXXX   X
 XXXXXXXXXXXXXXXXXXXXXXXXXX
+```
