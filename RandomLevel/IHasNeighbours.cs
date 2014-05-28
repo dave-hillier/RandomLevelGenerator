@@ -1,12 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Collections;
 
 namespace RandomLevel
 {
-	interface IHasNeighbours<N>  
+	interface IHasNeighbours<out TNode>  
 	{
-		IEnumerable<N> Neighbours { get; }
+		IEnumerable<TNode> Neighbours { get; }
 	}
 	
 }

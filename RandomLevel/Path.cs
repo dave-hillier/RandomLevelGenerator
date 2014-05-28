@@ -1,34 +1,38 @@
-using System;
 using System.Collections.Generic;
 using System.Collections;
 
 namespace RandomLevel
 {
 
-	class Path<Node> : IEnumerable<Node>
+	class Path<TNode> : IEnumerable<TNode>
 	{
-		public Node LastStep { get; private set; }
-		public Path<Node> PreviousSteps { get; private set; }
+		public TNode LastStep { get; private set; }
+		public Path<TNode> PreviousSteps { get; private set; }
 		public double TotalCost { get; private set; }
-		private Path(Node lastStep, Path<Node> previousSteps, double totalCost)
+
+		private Path(TNode lastStep, Path<TNode> previousSteps, double totalCost)
 		{
 			LastStep = lastStep;
 			PreviousSteps = previousSteps;
 			TotalCost = totalCost;
 		}
-		public Path(Node start) : this(start, null, 0) {}
-		public Path<Node> AddStep(Node step, double stepCost)
+		
+        public Path(TNode start) : this(start, null, 0) {}
+		
+        public Path<TNode> AddStep(TNode step, double stepCost)
 		{
-			return new Path<Node>(step, this, TotalCost + stepCost);
+			return new Path<TNode>(step, this, TotalCost + stepCost);
 		}
-		public IEnumerator<Node> GetEnumerator()
+		
+        public IEnumerator<TNode> GetEnumerator()
 		{
-			for (Path<Node> p = this; p != null; p = p.PreviousSteps)
+			for (Path<TNode> p = this; p != null; p = p.PreviousSteps)
 				yield return p.LastStep;
 		}
+
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return this.GetEnumerator();
+			return GetEnumerator();
 		}
 	}
 	

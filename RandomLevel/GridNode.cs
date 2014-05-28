@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace RandomLevel
@@ -18,9 +17,9 @@ namespace RandomLevel
 			_sizeY = sizeY; 
 		}
 
-		public int x { get { return _x; } }
+		public int X { get { return _x; } }
 
-		public int y { get { return _y; } }
+		public int Y { get { return _y; } }
 
 		public IEnumerable<GridNode> Neighbours {
 			get {
@@ -39,22 +38,40 @@ namespace RandomLevel
 			}
 		}
 
-		public override bool Equals(object obj)
-		{
-			var item = obj as GridNode;
-			if (item == null)
-				return false;
+	    protected bool Equals(GridNode other)
+	    {
+	        return _x == other._x && _y == other._y && _sizeX == other._sizeX && _sizeY == other._sizeY;
+	    }
 
-			return item._x == _x &&
-				item._y == _y &&
-				item._sizeX == _sizeX &&
-				item._sizeY == _sizeY;
-		}
+	    public override bool Equals(object obj)
+	    {
+	        if (ReferenceEquals(null, obj)) return false;
+	        if (ReferenceEquals(this, obj)) return true;
+	        if (obj.GetType() != this.GetType()) return false;
+	        return Equals((GridNode) obj);
+	    }
 
-		public override int GetHashCode()
-		{
-			return _x * 13 +  y * 317 + _sizeX * 619 + _sizeY * 238;
-		}
+	    public override int GetHashCode()
+	    {
+	        unchecked
+	        {
+	            var hashCode = _x;
+	            hashCode = (hashCode*397) ^ _y;
+	            hashCode = (hashCode*397) ^ _sizeX;
+	            hashCode = (hashCode*397) ^ _sizeY;
+	            return hashCode;
+	        }
+	    }
+
+	    public static bool operator ==(GridNode left, GridNode right)
+	    {
+	        return Equals(left, right);
+	    }
+
+	    public static bool operator !=(GridNode left, GridNode right)
+	    {
+	        return !Equals(left, right);
+	    }
 	}
 }
 
