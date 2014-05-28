@@ -16,6 +16,7 @@ namespace RandomLevel
         {
             InitGrid();
             Print();
+            Console.ReadKey();
         }
 
         private static void Print()
@@ -130,7 +131,7 @@ namespace RandomLevel
 
             foreach (var node in roomCenter)
             {
-                Console.WriteLine("Placing corridors to ({0}, {1})", node.X, node.Y);
+                //Console.WriteLine("Placing corridors to ({0}, {1})", node.X, node.Y);
 
                 CreateCorridors(r1, node);
                 CreateCorridors(node, r2);
@@ -216,7 +217,7 @@ namespace RandomLevel
                 cornerX = 1 + Rng.Next()%(horizontalSize - 1 - rect.X);
                 cornerY = 1 + Rng.Next()%(verticalSize - 1 - rect.Y);
             } while (!IsEmpty(rect, cornerX, cornerY) && --c != 0);
-            Console.WriteLine("{0}", c == 0 ? "Limit hit" : "Placed OK");
+            //Console.WriteLine("{0}", c == 0 ? "Limit hit" : "Placed OK");
 
             //if (c != 0)
             FillRoom(rect, cornerX, cornerY);
