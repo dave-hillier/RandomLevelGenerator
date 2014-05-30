@@ -4,17 +4,27 @@ using System.Text;
 
 namespace RandomLevel
 {
-    class Level
+
+    internal interface IGrid
+    {
+        int SizeX { get; }
+        int SizeY { get; }
+        char[,] Grid { get; }
+    }
+
+    class Level : IGrid
     {
         private readonly Random _rng; // TODO: use a seed
-        public const int Size = 31;
-        private readonly char[,] _grid = new char[Size, Size];
+        public int Size = 21;
+        private readonly char[,] _grid;
         private readonly CorridorPathFinder _pathFinder;
         public const char FilledChar = 'X';
 
-        public Level(int seed)
+        public Level(int seed, int size)
         {
             Seed = seed;
+            Size = size;
+            _grid = new char[size, size];
             ClearGrid();
             _pathFinder = new CorridorPathFinder(_grid);
             _rng = new Random(seed);
@@ -42,7 +52,7 @@ namespace RandomLevel
             get { return Size; }
         }
 
-        public char[,] Grid { get { return _grid; }}
+        public char[,] Grid { get { return _grid; } }
 
         public override string ToString()
         {
@@ -163,6 +173,6 @@ namespace RandomLevel
         {
             public int X;
             public int Y;
-        }        
+        }
     }
 }

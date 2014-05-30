@@ -3,66 +3,37 @@ using System.Collections.Generic;
 
 namespace RandomLevel
 {
-    class TileConstants
+    internal class TileLayout
     {
-
-    }
-
-    class TileLayout
-    {
-        const string EmptyTile = "Tile_01"; // TileFlags.Empty
-
-        const string CorridorTile = "Tile_03";
-        const TileFlags CorridorFlags = TileFlags.West | TileFlags.East;
-
-        const string WallTile = "Tile_07";
-        const TileFlags WallFlags = TileFlags.West;
-
-        const string CornerTile = "Tile_24";
-        const TileFlags CornerFlags = TileFlags.West /*| TileFlags.NorthWest*/ | TileFlags.North;
-
-        const string Filled = "Tile_21"; // TileFlags.Filled
-
-        const string RightTurnTile = "Tile_04";
-        const TileFlags RightTurnFlags =
-            TileFlags.NorthWest | TileFlags.North | TileFlags.NorthEast | TileFlags.SouthEast | TileFlags.SouthWest |
-            TileFlags.West;
-
-        const string WallWithEntranceTile = "Tile_16";
-        const TileFlags WallWithEntranceFlags = TileFlags.NorthWest | TileFlags.SouthWest;
-
-        const string TJunctionTile = "Tile_10";
-        const TileFlags TJunctionFlags =
-            TileFlags.NorthWest | TileFlags.NorthEast | TileFlags.SouthEast | TileFlags.SouthWest | TileFlags.West;
-
-        const string CrossRoadTile = "Tile_02";
-        const TileFlags CrossRoad = TileFlags.NorthWest | TileFlags.NorthEast | TileFlags.SouthEast | TileFlags.SouthWest;
-
-        const string TwoExitsTile = "Tile_25";
-        const TileFlags TwoExitsFlags = TileFlags.NorthWest | TileFlags.NorthEast | TileFlags.SouthWest;
-
-        const string CorridorEndTile = "Tile_17";
-        const TileFlags CorridorEndFlags =
-            TileFlags.NorthWest | TileFlags.NorthEast | TileFlags.SouthEast | TileFlags.SouthWest | TileFlags.West |
-            TileFlags.East | TileFlags.South;
-
-        private const string CornerOuterTile = EmptyTile; // TODO: Replace!
-        const TileFlags CornerOuterFlags = TileFlags.SouthWest;
-
-        const string CornerCorridorTile = "Tile_05";
-        //const TileFlags CornerCorridorFlags = TileFlags.NorthWest | TileFlags.South | TileFlags.SouthEast;
-        const TileFlags CornerCorridorFlags = TileFlags.NorthWest | TileFlags.South;
-
-        const string CornerCorridor2Tile = "Tile_06";
-        //const TileFlags CornerCorridor2Flags = TileFlags.SouthWest | TileFlags.North | TileFlags.NorthEast;
-        private const TileFlags CornerCorridor2Flags = TileFlags.SouthWest | TileFlags.North;
-
-        public static void Layout(Level level)
+        class TileFlagsPair
         {
-            var tileCodes = ToTileCodes(level);
+            public string Name;
+            public TileFlags Flags;
+        }
 
-            var sizeX = level.SizeX;
-            var sizeY = level.SizeY;
+        private static readonly TileFlagsPair[] Tiles =
+        {
+            new TileFlagsPair {Name = TileConstants.EmptyTile, Flags = TileFlags.North | TileFlags.NorthEast | TileFlags.NorthWest | TileFlags.West | TileFlags.Center | TileFlags.East | TileFlags.South | TileFlags.SouthEast },
+            new TileFlagsPair {Name = TileConstants.WallWithEntranceTile, Flags = TileFlags.North | TileFlags.NorthEast | TileFlags.West | TileFlags.Center | TileFlags.East | TileFlags.South | TileFlags.SouthEast },
+            new TileFlagsPair {Name = TileConstants.TwoExitsTile, Flags = TileFlags.North | TileFlags.Center | TileFlags.East | TileFlags.South | TileFlags.West | TileFlags.SouthEast},
+            new TileFlagsPair {Name = TileConstants.WallTile, Flags = TileFlags.North | TileFlags.Center | TileFlags.South | TileFlags.NorthEast | TileFlags.East | TileFlags.SouthEast },
+            new TileFlagsPair {Name = TileConstants.CornerCorridorTile, Flags = TileFlags.West | TileFlags.Center| TileFlags.East | TileFlags.North | TileFlags.NorthEast },
+            new TileFlagsPair {Name = TileConstants.CornerCorridor2Tile, Flags = TileFlags.West | TileFlags.Center| TileFlags.East | TileFlags.South | TileFlags.SouthEast},
+            new TileFlagsPair {Name = TileConstants.CrossRoadTile, Flags = TileFlags.North | TileFlags.Center | TileFlags.East | TileFlags.South | TileFlags.West },
+            new TileFlagsPair {Name = TileConstants.CornerTile, Flags = TileFlags.Center | TileFlags.East | TileFlags.South | TileFlags.SouthEast},
+            new TileFlagsPair {Name = TileConstants.TJunctionTile, Flags = TileFlags.North | TileFlags.Center | TileFlags.East | TileFlags.South },
+            new TileFlagsPair {Name = TileConstants.RightTurnTile, Flags = TileFlags.South | TileFlags.Center | TileFlags.East },
+            new TileFlagsPair {Name = TileConstants.CorridorTile, Flags = TileFlags.North | TileFlags.Center | TileFlags.South },
+            new TileFlagsPair {Name = TileConstants.CorridorEndTile, Flags = TileFlags.West | TileFlags.Center },            
+            new TileFlagsPair {Name = TileConstants.CornerOuterTile, Flags = TileFlags.SouthWest | TileFlags.Center},
+
+            new TileFlagsPair {Name = TileConstants.Filled, Flags = TileFlags.Empty},
+        };
+
+        public static IEnumerable<Tile> GetTilesAssets(TileFlags[,] tileCodes)
+        {
+            var sizeX = tileCodes.GetUpperBound(0);
+            var sizeY = tileCodes.GetUpperBound(1);
 
             WriteTileCodes(sizeX, sizeY, tileCodes);
 
@@ -71,69 +42,43 @@ namespace RandomLevel
             {
                 for (int j = 0; j < sizeY; j++)
                 {
-                    if (tileCodes[i, j] == TileFlags.Empty)
-                    {
-                        tiles.Add(new Tile { TileResource = EmptyTile, X = i, Z = j });
-                    }
-                    else if ((tileCodes[i, j] & TileFlags.Filled) != 0)
-                    {
-                        tiles.Add(new Tile { TileResource = Filled, X = i, Z = j });
-                    }
-                    else
-                    {
-                        Tile tile;
-
-                        var corridor = TryMatch(CorridorTile, CorridorFlags, tileCodes, i, j, out tile);
-                        if (corridor)
-                            tiles.Add(tile);
-                        else
-                        {
-                            var corner = TryMatch(CornerTile, CornerFlags, tileCodes, i, j, out tile);
-                            if (corner)
-                                tiles.Add(tile);
-                            else
-                            {
-                                var corridorCorner = TryMatch(CornerCorridorTile, CornerCorridorFlags, tileCodes, i, j, out tile);
-                                if (corridorCorner)
-                                    tiles.Add(tile);
-                                else
-                                {
-                                    var corridorCorner2 = TryMatch(CornerCorridor2Tile, CornerCorridor2Flags, tileCodes, i, j, out tile);
-                                    if (corridorCorner2)
-                                        tiles.Add(tile);
-                                    else
-                                    {
-                                        // TODO: junction
-                                        // TODO: cross road
-                                        var wall = TryMatch(WallTile, WallFlags, tileCodes, i, j, out tile);
-                                        if (wall)
-                                            tiles.Add(tile);
-                                        else
-                                        {
-                                            var entrance = TryMatch(WallWithEntranceTile, WallWithEntranceFlags, tileCodes,
-                                                i, j, out tile);
-                                            if (entrance)
-                                                tiles.Add(tile);
-                                            else
-                                            {
-                                                var outerCorner = TryMatch(CornerOuterTile, CornerOuterFlags, tileCodes, i,
-                                                    j, out tile);
-                                                if (outerCorner)
-                                                    tiles.Add(tile);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    Tile tile;
+                    if (TryMatchTile(i, j, out tile, tileCodes[i, j]))
+                        tiles.Add(tile);
                 }
             }
+            return tiles;
+        }
 
-            foreach (var tile in tiles)
+        public static bool TryMatchTile(int i, int j, out Tile tile, TileFlags tileFlags) 
+        {
+            foreach (var tileFlagsPair in Tiles)
             {
-                Console.WriteLine("        new Tile {{ Name=\"{0}\", Position=new Point({1}, {2}), Orientation={3}, Mirrored={4} }},", tile.TileResource, tile.X, tile.Z, tile.Orientation, tile.Mirrored ? "true" : "false");
+                var match = TryRotateMatchTile(tileFlagsPair, i, j, out tile, tileFlags);
+                if (match)
+                    return true;
             }
+            tile = null;
+            return false;
+        }
+
+        private static bool TryRotateMatchTile(TileFlagsPair tileFlagsPair, int i, int j, out Tile tile, TileFlags tileFlags)
+        {
+            var flags = tileFlagsPair.Flags;
+            for (int r = 0; r < 4; ++r)
+            {
+                bool match = (flags & tileFlags) == 0;
+
+                if (match)
+                {
+                    tile = new Tile {TileResource = tileFlagsPair.Name, X = i, Z = j, Orientation = r*90};
+                    return true;
+                }
+
+                flags = RotateClockwise(flags);
+            }
+            tile = null;
+            return false;
         }
 
         private static void WriteTileCodes(int sizeX, int sizeY, TileFlags[,] tileCodes)
@@ -150,110 +95,20 @@ namespace RandomLevel
             }
         }
 
-        private static bool TryMatch(string tileName, TileFlags flags, TileFlags[,] tileCodes, int i, int j, out Tile tile)
-        {
-            tile = null;
-
-            if ((tileCodes[i, j] & TileFlags.Filled) != 0)
-                return false;
-
-            for (int r = 0; r < 4; ++r)
-            {
-                bool match = (flags & tileCodes[i, j]) == flags;
-
-                if (match)
-                {
-                    tile = new Tile { TileResource = tileName, X = i, Z = j, Orientation = r * 90 };
-                    return true;
-                }
-
-                flags = RotateClockwise(flags);
-            }
-
-            // TODO: Mirror?
-
-            return false;
-        }
-
-        public static TileFlags Mirror(TileFlags flags)
-        {
-            TileFlags result = flags & (TileFlags.North | TileFlags.East | TileFlags.Filled);
-            result |= (flags & TileFlags.East) != 0 ? TileFlags.West : 0;
-            result |= (flags & TileFlags.West) != 0 ? TileFlags.East : 0;
-            result |= (flags & TileFlags.NorthEast) != 0 ? TileFlags.NorthWest : 0;
-            result |= (flags & TileFlags.NorthWest) != 0 ? TileFlags.NorthEast : 0;
-            result |= (flags & TileFlags.SouthEast) != 0 ? TileFlags.SouthWest : 0;
-            result |= (flags & TileFlags.SouthWest) != 0 ? TileFlags.SouthEast : 0;
-            return result;
-
-
-        }
-
         public static TileFlags RotateClockwise(TileFlags flags)
         {
             var value = (byte)flags;
             var rotated = (byte)((value << 2) | (value >> (8 - 2)));
-            return flags & TileFlags.Filled | (TileFlags)rotated;
+            return flags & TileFlags.Center | (TileFlags)rotated;
         }
 
-        private class Tile
+        public class Tile
         {
-            public bool Mirrored { get; set; }
             public int X { get; set; }
             public int Z { get; set; }
             public string TileResource { get; set; }
             public int Orientation { get; set; }
         }
-
-        [Flags]
-        public enum TileFlags
-        {
-            Empty = 0,
-
-            NorthWest = 1,
-            North = 1 << 1,
-            NorthEast = 1 << 2,
-            East = 1 << 3,
-            SouthEast = 1 << 4,
-            South = 1 << 5,
-            SouthWest = 1 << 6,
-            West = 1 << 7,
-
-            Filled = 1 << 8
-        }
-
-        private static TileFlags[,] ToTileCodes(Level level)
-        {
-            var sizeX = level.SizeX;
-            var sizeY = level.SizeY;
-
-            var tiles = new TileFlags[sizeX, sizeY];
-
-            for (int i = 0; i < sizeX; i++)
-            {
-                for (int j = 0; j < sizeY; j++)
-                {
-                    TileFlags tile = 0;
-                    tile |= GetValue(i - 1, j + 1, level) ? TileFlags.NorthWest : 0;
-                    tile |= GetValue(i, j + 1, level) ? TileFlags.North : 0;
-                    tile |= GetValue(i + 1, j + 1, level) ? TileFlags.NorthEast : 0;
-                    tile |= GetValue(i + 1, j, level) ? TileFlags.East : 0;
-                    tile |= GetValue(i + 1, j - 1, level) ? TileFlags.SouthEast : 0;
-                    tile |= GetValue(i, j - 1, level) ? TileFlags.South : 0;
-                    tile |= GetValue(i - 1, j - 1, level) ? TileFlags.SouthWest : 0;
-                    tile |= GetValue(i - 1, j, level) ? TileFlags.West : 0;
-                    tile |= GetValue(i, j, level) ? TileFlags.Filled : 0;
-                    tiles[i, j] = tile;
-                }
-            }
-            return tiles;
-        }
-
-        private static bool GetValue(int x, int y, Level level)
-        {
-            if (x < level.SizeX && y < level.SizeY && x > 0 && y > 0)
-                return level.Grid[x, y] == Level.FilledChar;
-            return true;
-        }
     }
+
 }

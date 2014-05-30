@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="CorridorPathFinder.cs" />
     <Compile Include="Level.cs" />
+    <Compile Include="LevelEncoder.cs" />
     <Compile Include="ReflectedAndFlippedPlacementStrategy.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -44,6 +45,8 @@
     <Compile Include="Path.cs" />
     <Compile Include="IHasNeighbours.cs" />
     <Compile Include="AStarPathFinder.cs" />
+    <Compile Include="TileConstants.cs" />
+    <Compile Include="TileFlags.cs" />
     <Compile Include="TileLayout.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

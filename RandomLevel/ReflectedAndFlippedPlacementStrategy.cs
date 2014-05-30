@@ -5,15 +5,16 @@ namespace RandomLevel
 {
     class ReflectedAndFlippedPlacementStrategy
     {
-        public const int NumRooms = 20;
+        private readonly int _numRooms;
         private readonly char[,] _grid;
         private readonly int _sizeX;
         private readonly int _sizeY;
         private readonly Level _level;
         private readonly Random _rng;
 
-        public ReflectedAndFlippedPlacementStrategy(Level level)
+        public ReflectedAndFlippedPlacementStrategy(Level level, int numberOfRooms)
         {
+            _numRooms = numberOfRooms;
             _rng = new Random(level.Seed);
             _grid = level.Grid;
             _level = level;
@@ -36,7 +37,7 @@ namespace RandomLevel
             roomCenter.Add(new GridNode(captureRoom.Item1, captureRoom.Item2, _sizeX, _sizeY));
 
 
-            for (var i = 0; i < NumRooms - 2; ++i)
+            for (var i = 0; i < _numRooms - 2; ++i)
             {
                 var r = _level.PlaceRoom(_sizeX, _sizeY / 2);
                 roomCenter.Add(new GridNode(r.Item1, r.Item2, _sizeX, _sizeY));
@@ -74,25 +75,7 @@ namespace RandomLevel
             _level.ReflectAndMirrorVertically();
 
             _level.CreateCorridors(r1, r2);
-
-
-            // TODO: remove test
-            _grid[3, 15] = ' ';
-            _grid[4, 15] = ' ';
-            _grid[5, 15] = ' ';
-            _grid[5, 16] = ' ';
-            _grid[5, 17] = ' ';
-            _grid[5, 18] = ' ';
-            _grid[6, 18] = ' ';
-
-
-            _grid[_sizeX - 3, 15] = ' ';
-            _grid[_sizeX - 4, 15] = ' ';
-            _grid[_sizeX - 5, 15] = ' ';
-            _grid[_sizeX - 6, 15] = ' ';
-            _grid[_sizeX - 5, 16] = ' ';
-            _grid[_sizeX - 5, 14] = ' ';
-    
+  
 
             PlacePointsOfInterest(captureRoom);
         }
