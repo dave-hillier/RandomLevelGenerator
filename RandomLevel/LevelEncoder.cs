@@ -2,7 +2,7 @@ namespace RandomLevel
 {
     internal static class LevelEncoder
     {
-        public static TileFlags[,] ToTileCodes(this Level level)
+        public static TileFlags[,] ToTileCodes(this IGrid level)
         {
             var sizeX = level.SizeX;
             var sizeY = level.SizeY;

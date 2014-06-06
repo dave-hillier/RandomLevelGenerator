@@ -32,24 +32,19 @@ namespace RandomLevel
 
         public static IEnumerable<Tile> GetTilesAssets(TileFlags[,] tileCodes)
         {
-            var sizeX = tileCodes.GetUpperBound(0);
-            var sizeY = tileCodes.GetUpperBound(1);
+            var sizeX = tileCodes.GetUpperBound(0) + 1;
+            var sizeY = tileCodes.GetUpperBound(1) + 1;
 
-            WriteTileCodes(sizeX, sizeY, tileCodes);
-
-            var tiles = new List<Tile>();
             for (int i = 0; i < sizeX; i++)
             {
                 for (int j = 0; j < sizeY; j++)
                 {
                     Tile tile;
                     if (TryMatchTile(i, j, out tile, tileCodes[i, j]))
-                        tiles.Add(tile);
+                        yield return tile;
                 }
             }
-            return tiles;
         }
-
         public static bool TryMatchTile(int i, int j, out Tile tile, TileFlags tileFlags) 
         {
             foreach (var tileFlagsPair in Tiles)
@@ -81,7 +76,7 @@ namespace RandomLevel
             return false;
         }
 
-        private static void WriteTileCodes(int sizeX, int sizeY, TileFlags[,] tileCodes)
+        /*private static void WriteTileCodes(int sizeX, int sizeY, TileFlags[,] tileCodes)
         {
             Console.WriteLine("Tiles");
             for (int i = 0; i < sizeX; i++)
@@ -93,7 +88,7 @@ namespace RandomLevel
                 Console.WriteLine();
                 Console.WriteLine();
             }
-        }
+        }*/
 
         public static TileFlags RotateClockwise(TileFlags flags)
         {

@@ -19,7 +19,6 @@ namespace RandomLevel
 
         public static double GetDistance(GridNode n1, GridNode n2)
         {
-            // TODO: Euclidian? Manhattan?
             return Math.Abs(n2.X - n1.X) + Math.Abs(n2.Y - n1.Y);
         }
 
@@ -34,8 +33,8 @@ namespace RandomLevel
 
         public double EstimateCost(GridNode start, GridNode destination)
         {
-            int sizeX = _grid.GetUpperBound(0);
-            int sizeY = _grid.GetUpperBound(1);
+            int sizeX = _grid.GetUpperBound(0) + 1;
+            int sizeY = _grid.GetUpperBound(1) + 1;
 
             // TODO: Padding parameter
             // Avoid edges

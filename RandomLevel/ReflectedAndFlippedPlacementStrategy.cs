@@ -18,8 +18,8 @@ namespace RandomLevel
             _rng = new Random(level.Seed);
             _grid = level.Grid;
             _level = level;
-            _sizeX = _grid.GetUpperBound(0);
-            _sizeY = _grid.GetUpperBound(1);
+            _sizeX = _grid.GetUpperBound(0) + 1;
+            _sizeY = _grid.GetUpperBound(1) + 1;
         }
 
         public void PlaceLevel() 
@@ -47,8 +47,8 @@ namespace RandomLevel
             {
                 _grid[2, j] = ' ';
                 _grid[j, 2] = ' ';
-                _grid[_sizeX - 2, j] = ' ';
-                _grid[j, _sizeY - 2] = ' ';
+                _grid[_sizeX - 3, j] = ' ';
+                _grid[j, _sizeY - 3] = ' ';
             }
 
             var r1 = new GridNode(3, 3, _sizeX, _sizeY);
@@ -84,7 +84,7 @@ namespace RandomLevel
         {
             var rOrB = _rng.Next() % 2 == 0;
             _grid[2, 2] = rOrB ? 'R' : 'B';
-            _grid[_sizeX - 2, _sizeY - 2] = rOrB ? 'B' : 'R';
+            _grid[_sizeX - 3, _sizeY - 3] = rOrB ? 'B' : 'R';
             _grid[_sizeX/2, _sizeY/2] = 'C';
             _grid[captureRoom.Item1, captureRoom.Item2] = 'C';
             _grid[_sizeX - captureRoom.Item1, _sizeY - captureRoom.Item2] = 'C';

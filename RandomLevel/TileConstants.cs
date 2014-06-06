@@ -1,6 +1,6 @@
 namespace RandomLevel
 {
-    class TileConstants
+    static class TileConstants
     {
         public const string EmptyTile = "Tile_01";
         public const string CorridorTile = "Tile_03";

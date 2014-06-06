@@ -32,11 +32,12 @@ namespace RandomLevel
 
         private void ClearGrid()
         {
-            foreach (var coord in GridCoordinates())
+            for (var i = 0; i < SizeX; ++i)
             {
-                var i = coord.Item1;
-                var j = coord.Item2;
-                _grid[j, i] = FilledChar;
+                for (var j = 0; j < SizeY; ++j)
+                {
+                    _grid[j, i] = FilledChar;
+                }
             }
         }
 
@@ -44,12 +45,12 @@ namespace RandomLevel
 
         public int SizeX
         {
-            get { return Size; }
+            get { return _grid.GetUpperBound(0) + 1; }
         }
 
         public int SizeY
         {
-            get { return Size; }
+            get { return _grid.GetUpperBound(1) + 1; }
         }
 
         public char[,] Grid { get { return _grid; } }
@@ -57,13 +58,14 @@ namespace RandomLevel
         public override string ToString()
         {
             var sb = new StringBuilder();
-            foreach (var coord in GridCoordinates())
+            for (var i = 0; i < SizeX; ++i)
             {
-                var i = coord.Item1;
-                var j = coord.Item2;
-                sb.Append(_grid[j, i]);
-                if (j == SizeY - 1)
-                    sb.AppendLine();
+                for (var j = 0; j < SizeY; ++j)
+                {
+                    sb.Append(_grid[j, i]);
+                    if (j == SizeY - 1)
+                        sb.AppendLine();
+                }
             }
             return sb.ToString();
         }
@@ -156,17 +158,6 @@ namespace RandomLevel
                 }
             }
             return true;
-        }
-
-        public IEnumerable<Tuple<int, int>> GridCoordinates()
-        {
-            for (var i = 0; i < SizeX; ++i)
-            {
-                for (var j = 0; j < SizeY; ++j)
-                {
-                    yield return Tuple.Create(i, j);
-                }
-            }
         }
 
         public struct Point
